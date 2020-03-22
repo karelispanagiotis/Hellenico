@@ -1,0 +1,11 @@
+# Hellenico Problems Solutions
+
+keywords: hellenico, hellenicogr, pdp, hellenico solutions
+
+_ENG:_ Solutions for the problems of [hellenico.gr][homepage]. All solutions are written in C++ and organized inside folders, whose name corresponds to the unit a problem is presented inside the [site][problems]. 
+
+_ΕΛ_: Λύσεις για τα προβλήματα του [hellenico.gr][homepage]. Όλες οι λύσεις είναι γραμμένες σε C++ και οργανώνονται μέσα σε φακέλους, το όνομα των οποίων αντιστοιχεί στην ενότητα όπου το πρόβλημα παρουσιάζεται μέσα στην [ιστοσελίδα][problems].
+
+
+[homepage]: http://hellenico.gr/index.php?page=home
+[problems]: http://hellenico.gr/index.php?page=problems
