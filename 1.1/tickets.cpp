@@ -1,29 +1,26 @@
 #include <cstdio>
 
-int ticketPrice[5] = {10, 9, 8, 7, 5};
-int numOfPeople[5];
-
 int main()
 {
-    FILE *input  = freopen("tickets.in", "r", stdin);
-    FILE *output = freopen("tickets.out", "w", stdout);
+#ifdef CONTEST
+    freopen("tickets.in", "r", stdin);
+    freopen("tickets.out", "w", stdout);
+#endif
 
-    int n, i;
-    scanf("%d", &n);
-    for(i=1; i<=4; i++)
-        scanf("%d", &numOfPeople[i]);
-
-    for(i=0; i<5 && numOfPeople[i]<n; i++);
-
-    int min = ticketPrice[i-1]*n;
-
-    for(; i<5; i++)
-        if(min > ticketPrice[i]*numOfPeople[i]) 
-            min = ticketPrice[i]*numOfPeople[i];
+    int n, a, b, c, d, cost;
+    scanf("%d %d %d %d %d", &n, &a, &b, &c, &d);
     
-    printf("%d", min);
+    if(n<a)              cost = 10*n;
+    else if(a<=n && n<b) cost = 9*n;
+    else if(b<=n && n<c) cost = 8*n;
+    else if(c<=n && n<d) cost = 7*n;
+    else                 cost = 5*n;
 
-    fclose(input);
-    fclose(output);
+    if(n<a && 9*a<cost) cost = 9*a;
+    if(n<b && 8*b<cost) cost = 8*b;
+    if(n<c && 7*c<cost) cost = 7*c;
+    if(n<d && 5*d<cost) cost = 5*d;
+
+    printf("%d\n", cost);
     return 0;
 }
