@@ -1,10 +1,7 @@
-#include <cstdio>
-#include <cstdlib>
-#include <algorithm>
+#include <bits/stdc++.h>
+using namespace std;
 
-bool ones[1005];
-int w[1005];
-int n;
+int n, ones[1005], w[1005];
 
 int main()
 {
@@ -15,21 +12,15 @@ int main()
     for(int i=0; i<n; i++)
     {
         scanf("%d", &w[i]);
-        ones[i] = w[i]==1 ? true : false;
+        if(w[i]==1) ones[i]=1, w[i]=9001;
     }
 
-    std::sort(w, w + n);
+    sort(w, w + n);
 
-    int j = std::upper_bound(w,w+n,1) - w;
+    int j = 0;
     for(int i=0; i<n; i++)
-    {
-        if(ones[i]==false)
-        {
-            printf("%d\n", w[j]);
-            j++;
-        }
-        else
-            printf("1\n");
-    }
+        if(ones[i]==1) printf("1\n");
+        else           printf("%d\n", w[j++]);
+
     return 0;
 }
