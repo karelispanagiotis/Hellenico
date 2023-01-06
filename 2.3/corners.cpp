@@ -1,59 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int di[4]={-1,0,+1,0}, dj[4]={0,+1,0,-1};
-vector<pair<int,int>> start={{5,5},{5,6},{6,5},{6,6}}, win={{1,1},{1,2},{2,1},{2,2}};
-map<vector<pair<int,int>>, int> dist, used;
-char board[10][10];
+char ch;
+queue<long long> q;
+unordered_map<long long, int> used, dist;
+long long stones, flags, tiles, d[4] = {-8 /*Up*/, +1 /*Right*/, +8 /*Down*/, -1 /*Left*/} ;
+long long beg = (1LL<<53) | (1LL<<54) | (1LL<<45) | (1LL<<46);
+long long fin = (1LL<< 9) | (1LL<<10) | (1LL<<17) | (1LL<<18);
 
-void bfs()
-{
-	queue<vector<pair<int,int>>> q;
-	dist[start] = 0;
-	used[start] = true;
-	q.push(start);
+void bfs(){
+	used[beg] = true;
+	dist[beg] = 0;
+	q.push(beg);
 
-	while(!q.empty())
-	{
-		auto v = q.front(); q.pop();
-		for(auto checker : v) //draw on the board
-			board[checker.first][checker.second] = 'c'; 
-		for(int i=0; i<4; i++) // for every checker
-		{
-			for(int k=0; k<4; k++) // for every direction
-			{
-				auto u = v;
-				char adj1 = board[u[i].first + di[k]][u[i].second + dj[k]];
-				char adj2 = board[u[i].first + 2*di[k]][u[i].second + 2*dj[k]]; 
-				if(adj1 == '.')
-					u[i] = {u[i].first + di[k], u[i].second + dj[k]};
-				else if((adj1=='c' || adj1=='s') && adj2=='.')
-					u[i] = {u[i].first + 2*di[k], u[i].second + 2*dj[k]};
-				sort(u.begin(), u.end());
+	while(!q.empty()){
+		long long pawns = q.front(); q.pop();	
 
-				if(!used[u])
-				{
-					dist[u] = dist[v] + 1;
-					used[u] = true;
-					q.push(u);
+		for(int pos=0; pos<64; pos++){
+			if( !(pawns>>pos & 1) ) continue;
+
+			for(int k=0; k<4; k++){
+				int new_pos = pos + d[k];
+				if( (stones>>new_pos & 1) || (pawns>>new_pos & 1) ) new_pos += d[k];
+				
+				long long new_pawns = pawns & ~(1LL<<pos) | (1LL<<new_pos);
+				if( (tiles>>new_pos & 1) && !(pawns>>new_pos & 1) && !used[new_pawns]){
+					used[new_pawns] = true;
+					dist[new_pawns] = dist[pawns] + 1; 
+					q.push(new_pawns);
 				}
 			}
 		}
-		for(auto checker : v) //undo drawing
-			board[checker.first][checker.second] = '.';
 	}
 }
 
-int main()
-{
+int main(){
 #ifdef CONTEST
 	freopen("corners.in", "r", stdin);
 	freopen("corners.out", "w", stdout);
 #endif
-	for(int i=1; i<=6; i++)
-		for(int j=1; j<=6; j++)
-			scanf(" %c", &board[i][j]);
+	for(int i=1; i<=6; i++){
+		for(int j=1; j<=6; j++){
+			scanf(" %c", &ch);
+			if(ch=='.') tiles  |= (1LL<<(i*8+j));
+			if(ch=='r') flags  |= (1LL<<(i*8+j));
+			if(ch=='s') stones |= (1LL<<(i*8+j));
+		}
+	}
 	bfs();
-	printf("%d\n", dist[win]==0 ? -1 : dist[win]);
+	printf("%d\n", used[fin] ? dist[fin] : -1);
 	return 0;
 }
